@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    
+    <script src="/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="/javascripts/knockout-3.2.0.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/ebookmvvm.js"></script>
+    <script src="/javascripts/jquery-ui.min.js"></script>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+  </head>
+  <body>
+  	<div class="container">
+  		<div class="jumbotron">
+  			<h1>{{ title }}</h1>
+    		<p>Welcome to {{ title }}</p>
+    		<p>
+    			<form class="form-inline">
+    				<div class="form-group">
+    					<input class="form-control" placeholder="Query" type="text" name="searchField" id="searchField" />
+    					<a class="btn btn-default" data-bind="click:$root.findBooks">Search</a>
+    				</div>
+    			</form>
+    		</p>
+    	</div>
+  	
+    
+    	<h2>Book list</h2>
+
+    	<table class="table">
+    		<thead>
+    			<tr><th>Title</th><th>Tags</th><th>PDF</th><th>Delete</th></tr>
+    		</thead>
+    		<tbody data-bind="foreach: {data:books, as:'book'}">
+    			<tr>
+    				<td><input data-bind="value:title" /></td>
+            <td>
+              <div data-bind="foreach: bookTags">
+                <div class="form-group">
+                  <input data-bind="value:tagName" />
+                  <a class="btn btn-default btn-xs" data-bind="click: book.removeTag">Remove tag</a>
+                </div>
+              </div>
+              <a class="btn btn-default" data-bind="click:addTag">Add tag</a>
+            </td>
+            <td>
+              <a data-bind="text:$data.url"></a>
+              <form enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="upload">PDF:</label>
+                <input type="file" class="uploadFile" data-bind="attr: { id:$data.id, name:$data.id }" />
+              </div>
+              </form>
+            </td>
+            <td>
+              <a href="#" data-bind="click: $parent.removeBook">Delete</a>
+            </td>
+    			</tr>
+    		</tbody>
+    	</table>
+
+      <!-- Add new book button and modal -->
+    	<p>
+    		<a href="#" class="btn btn-default" data-bind="click: $root.addBook">Add eBook</a>
+        <a href="#" class="btn btn-default" data-bind="click: save">Save</a>
+      </p>
+
+      <!--
+    		<div class="modal fade" id="newBookModal" tabindex="-1" role="dialog">
+  			  <div class="modal-dialog">
+    		    <div class="modal-content">
+      			  <div class="modal-header">
+        		    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        			<h4 class="modal-title" id="myModalLabel">Add new eBook</h4>
+      			  </div>
+      			  <div class="modal-body">
+        		    <form name="newBookForm" id="newBookForm" role="form" action="/api/ebook" enctype="multipart/form-data" method="post">
+        		      <div class="form-group">
+        		      	<label for="newTitle">New title:</label>
+     				        <input type="text" name="newTitle" id="newTitle" class="form-control" placeholder="New title" />
+     				      </div>
+
+                  <label>Tags:</label>
+                  <div class="form-group"> 
+                        <label>
+                          <input type="checkbox" data-bind="attr:{value: tagName}">
+                          <input data-bind="value:tagName" />
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <a class="btn btn-default" data-bind="click:addTag">Add Tag</a>
+                    </div>
+                  </div>
+
+     				      <div class="form-group">
+     				  	    <label for="upload">PDF:</label>
+     				        <input type="file" name="upload" id="upload" />
+     				      </div>
+     				    </form>
+     			    </div>
+      			  <div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        			<button type="button" class="btn btn-primary" data-bind="click:$root.saveNewBook">Save changes</button>
+      			  </div>
+    			  </div>
+  			  </div>
+			</div>
+    -->
+    </div>
+  </body>
+</html>
