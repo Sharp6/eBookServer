@@ -2,3 +2,8 @@ body {
 	padding-top: 50px;
 	padding-bottom: 100px;
 }
+
+.tag {
+	cursor: pointer;
+	text-decoration: underline;
+}

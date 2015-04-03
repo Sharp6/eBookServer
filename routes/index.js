@@ -32,14 +32,56 @@ router.get('/api/ebooks/find/:key', function(req, res) {
 });
 
 router.get('/api/ebooks/tags', function(req, res){
-  ebook.distinct("tags", function(err, result){
+  ebook.aggregate(
+    { $unwind: '$tags' },
+    { $project: 
+      {
+        'tag': { $toLower: '$tags' }
+      }
+    },
+    { $group: 
+      {
+        '_id': '$tag',
+        'sum': { $sum: 1 }
+      }
+    },
+    { $sort:
+      { 
+        'sum': -1,
+        '_id': 1
+      }
+    }, 
+    function(err, result) {
+      if(err)
+        res.send(err);
+      res.send(result);
+    });
+
+/*  ebook.distinct("tags", function(err, result){
   	if(err)
   	  res.send(err);
   	res.send(result);
   });
+*/
 });
 
+router.get('/api/ebooks/tags/:tag', function(req,res) {
+  ebook.find(
+    {
+      tags:
+      { 
+        $regex : new RegExp(req.params.tag, "i") 
+      } 
+    }, function(err,result) {
+      if(err)
+        res.send(err);
+      res.send(result);
+    });
+  }
+);
+
 /* API POST */
+/*
 router.post('/api/ebook', function(req, res) {
  var book = new ebook();
  book.title = req.body.newTitle;
@@ -52,6 +94,7 @@ router.post('/api/ebook', function(req, res) {
   res.json({message:'eBook saved to database.'});
  });
 });
+*/
 
 router.post('/api/ebooks/files', function(req, res) {
   var message = [];

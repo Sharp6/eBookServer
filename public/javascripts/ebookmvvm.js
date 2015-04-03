@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-	function Tag(aTagName) {
-		this.tagName = ko.observable(aTagName);
+	function Tag(tagName) {
+		this.tagName = ko.observable(tagName);
 	};
 
 	function Book(bookData) {
@@ -30,28 +30,35 @@ $(document).ready(function() {
 
 		self.initData = function() {
 			$.getJSON("/api/ebooks/tags", function(allTagData) {
-        	  var mappedTags = $.map(allTagData, function(tagData) { return new Tag(tagData) });
-        	  self.availableTags(mappedTags);
-    		}); 
+				var mappedTags = $.map(allTagData, function(tagData) { return new Tag(tagData._id) });
+        self.availableTags(mappedTags);
+    	}); 
 
-    		$.getJSON("/api/ebooks", function(allBookData) {
-        	  var mappedBooks = $.map(allBookData, function(bookData) { return new Book(bookData) });
-        	  self.books(mappedBooks);
+    	$.getJSON("/api/ebooks", function(allBookData) {
+	  	  var mappedBooks = $.map(allBookData, function(bookData) { return new Book(bookData) });
+	  	  self.books(mappedBooks);
 
-        	  var titles = $.map(allBookData, function(bookData) { return bookData.title});
-        	  $( "#searchField" ).autocomplete({
-      		    source: titles
-    		  	});
+	  	  var titles = $.map(allBookData, function(bookData) { return bookData.title});
+	  	  $( "#searchField" ).autocomplete({
+			    source: titles
+		  	});
 
-    		}); 
+  		}); 
 		};
 
 		self.findBooks = function() {
 			var key = $("input#searchField").val();
 			$.getJSON('/api/ebooks/find/'+key, function(allBookData) {
-        	  var mappedBooks = $.map(allBookData, function(bookData) { return new Book(bookData) });
-        	  self.books(mappedBooks);
-        	});
+      	var mappedBooks = $.map(allBookData, function(bookData) { return new Book(bookData) });
+        self.books(mappedBooks);
+			});
+		};
+
+		self.getTaggedBooks = function(tag) {
+			$.getJSON('/api/ebooks/tags/'+tag.tagName(), function(allBookData) {
+      	var mappedBooks = $.map(allBookData, function(bookData) { return new Book(bookData) });
+        self.books(mappedBooks);
+			});
 		};
 
 		/*
