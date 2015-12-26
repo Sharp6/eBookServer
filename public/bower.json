@@ -1,0 +1,30 @@
+{
+  "name": "eBookServer",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Sharp6/eBookServer",
+  "authors": [
+    "Philip Huysmans <philip.huysmans@gmail.com>"
+  ],
+  "description": "A front-end for the 2root ebook server",
+  "keywords": [
+    "2root",
+    "ebooks"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "javascript/libraries",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "knockout": "~3.3.0",
+    "requirejs": "~2.1.20",
+    "jQuery.Hotkeys": "~0.2.0",
+    "bootstrap3-typeahead": "~3.1.1"
+  }
+}
