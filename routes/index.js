@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ebook = require('../models/ebook.js');
+var ebookController = require('../controllers/ebook.controller.client');
 
 /* GET user pages. */
 router.get('/', function(req, res) {
@@ -16,14 +17,10 @@ router.get('/admin', function(req, res) {
 
 /* API GET routes */
 router.get('/api/ebooks', function(req, res) {
-  ebook.find(function(err, books){
-    if(err)
-    	res.send(err);
-    res.json(books);
-  });	
+  return ebookController.getEbooks(req,res);
 });
 
-router.get('/api/ebooks/find/:key', function(req, res) {
+router.get('/api/ebooks/:key', function(req, res) {
   ebook.find({ title : new RegExp('.*'+req.params.key+'.*', 'i') }, function(err, doc){
   	if(err)
   		res.send(err);
@@ -31,7 +28,7 @@ router.get('/api/ebooks/find/:key', function(req, res) {
   });
 });
 
-router.get('/api/ebooks/tags', function(req, res){
+router.get('/api/tags', function(req, res){
   ebook.aggregate(
     { $unwind: '$tags' },
     { $project: 
@@ -65,7 +62,7 @@ router.get('/api/ebooks/tags', function(req, res){
 */
 });
 
-router.get('/api/ebooks/tags/:tag', function(req,res) {
+router.get('/api/tags/:tag', function(req,res) {
   ebook.find(
     {
       tags:

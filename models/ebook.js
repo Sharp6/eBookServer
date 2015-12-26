@@ -4,6 +4,8 @@ var Schema = mongoose.Schema;
 var ebookSchema = new Schema({
  id: String,
  title: String,
+ author: String,
+ publisher: String,
  url: String,
  tags: [ String ]
 });

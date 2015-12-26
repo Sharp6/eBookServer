@@ -2,12 +2,8 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    
-    <script src="/javascripts/jquery-2.1.1.min.js"></script>
-    <script src="/javascripts/knockout-3.2.0.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/ebookmvvm.js"></script>
-    <script src="/javascripts/jquery-ui.min.js"></script>
+
+    <script src="/javascript/libraries/requirejs/require.js" data-main="/javascript/ebooksMain.js"></script>
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
@@ -40,7 +36,9 @@
     		<tbody data-bind="foreach:books">
     			<tr>
     				<td data-bind="text:title"></td>
-            <td data-bind="foreach:bookTags"><span data-bind="text:tagName(), click:$root.getTaggedBooks" class="tag"></span> </td>
+            <td data-bind="foreach:bookTags">
+              <span data-bind="text:$data, click:$root.getTaggedBooks" class="tag"></span>
+            </td>
     				<td>
               <a data-bind="attr:{href:$data.url}, visible: $data.url">download</a>
             </td>
@@ -49,9 +47,19 @@
     	</table>
 
       <div class="well well-lg">
-        <ul data-bind="foreach:availableTags">
+        Tags!
+        <ul data-bind="foreach:tags">
           <li>
-            <span data-bind="text:tagName(), click:$root.getTaggedBooks" class="tag"></span>
+            <span data-bind="text:$data, click:$root.getTaggedBooks" class="tag"></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="well well-lg">
+        Titles!
+        <ul data-bind="foreach:titles">
+          <li>
+            <span data-bind="text:$data"></span>
           </li>
         </ul>
       </div>
